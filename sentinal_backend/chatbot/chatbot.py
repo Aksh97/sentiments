@@ -25,25 +25,15 @@ class Chatbot:
         self.intents = json.loads(open(intents_filename).read())
         self.words = pickle.load(open(words_filename, 'rb'))
         self.classes = pickle.load(open(classes_filename, 'rb'))
-        self.lemmatizer = WordNetLemmatizer()
-        self.session = tf.Session()
-        self.graph = tf.get_default_graph()
-        set_session(self.session)
         self.model = load_model(model_filename)
-        with self.graph.as_default():
-            with self.session.as_default():
-                print("Model Loaded!")
+        self.lemmatizer = WordNetLemmatizer()
+        #self.session = tf.Session()
+        #self.graph = tf.get_default_graph()
 
     def clean_up_sentence(self,sentence):
         sentence_words = nltk.word_tokenize(sentence)
         sentence_words = [self.lemmatizer.lemmatize(word.lower()) for word in sentence_words]
         return sentence_words
-
-    def clean_up_sentence(self, sentence):
-        sentence_words = nltk.word_tokenize(sentence)
-        sentence_words = [self.lemmatizer.lemmatize(word.lower()) for word in sentence_words]
-        return sentence_words
-
 
     def bow(self, sentence, words, show_details=True):
         # tokenize the pattern
@@ -62,11 +52,9 @@ class Chatbot:
     def predict_class(self, sentence, modelChatbot):
         # filter out predictions below a threshold
         p = self.bow(sentence, self.words, show_details=False)
-        #keras.backend.clear_session()
         res = None
-        with self.graph.as_default():
-            set_session(self.session)
-            res = modelChatbot.predict(np.array([p]))[0]
+        #with self.graph.as_default():
+        res = modelChatbot.predict(np.array([p]))[0]
         ERROR_THRESHOLD = 0.25
         results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
         # sort by strength of probability
@@ -75,16 +63,15 @@ class Chatbot:
         for r in results:
             return_list.append({"intent": self.classes[r[0]], "probability": str(r[1])})
         return return_list
-    
+
     def getResponse(self, ints):
         tag = ints[0]['intent']
         list_of_intents = self.intents['intents']
         for i in list_of_intents:
             if (i['tag'] == tag):
-                if(i['tag'] == 'sentiment'):
-                    neg = random.randint(58,70)
+                if (i['tag'] == 'sentiment'):
+                    neg = random.randint(58, 70)
                     pos = 100 - neg
-                    time.sleep(2)
                     result = 'There are ' + str(pos) + ' % positive tweets and ' + str(neg) + ' % negative tweets.'
                 else:
                     result = random.choice(i['responses'])
