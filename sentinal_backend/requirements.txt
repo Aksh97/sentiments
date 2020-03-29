@@ -1,0 +1,8 @@
+numpy
+nltk
+pickle-mixin
+flask
+keras
+tensorflow==1.13.1
+pandas
+requests
