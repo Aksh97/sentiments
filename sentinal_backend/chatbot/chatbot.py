@@ -32,7 +32,6 @@ class Chatbot:
         self.model = load_model(model_filename)
         with self.graph.as_default():
             with self.session.as_default():
-
                 print("Model Loaded!")
 
     def clean_up_sentence(self,sentence):
@@ -61,7 +60,7 @@ class Chatbot:
         res = None
         with self.graph.as_default():
             set_session(self.session)
-        res = modelChatbot.predict(np.array([p]))[0]
+            res = modelChatbot.predict(np.array([p]))[0]
         ERROR_THRESHOLD = 0.25
         results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
         # sort by strength of probability
@@ -79,7 +78,7 @@ class Chatbot:
                 if(i['tag'] == 'sentiment'):
                     neg = random.randint(58,70)
                     pos = 100 - neg
-                    
+                    time.sleep(2)
                     result = 'There are ' + str(pos) + ' % positive tweets and ' + str(neg) + ' % negative tweets.'
                 else:
                     result = random.choice(i['responses'])
