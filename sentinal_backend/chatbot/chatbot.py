@@ -30,9 +30,10 @@ class Chatbot:
         self.graph = tf.get_default_graph()
         set_session(self.session)
         self.model = load_model(model_filename)
-       # with self.graph.as_default():
-        #    with self.session.as_default():
-        #        print("Model Loaded!")
+        with self.graph.as_default():
+            with self.session.as_default():
+
+                print("Model Loaded!")
 
     def clean_up_sentence(self,sentence):
         sentence_words = nltk.word_tokenize(sentence)
@@ -58,8 +59,8 @@ class Chatbot:
         p = self.bow(sentence, self.words, show_details=False)
         #keras.backend.clear_session()
         res = None
-       # with self.graph.as_default():
-       #set_session(self.session)
+        with self.graph.as_default():
+            set_session(self.session)
         res = modelChatbot.predict(np.array([p]))[0]
         ERROR_THRESHOLD = 0.25
         results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
