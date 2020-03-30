@@ -20,7 +20,7 @@ script:
   #Deploy on AWS EC2 from Master
   - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then openssl aes-256-cbc -k "$DECRYPT_KEY" -in sentiments.pem.enc -out sentiments.pem -d -md sha256; fi
   - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then chmod 400 sentiments.pem; fi
-  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then ssh -o StrictHostKeyChecking=no -i sentiments.pem ubuntu@ec2-35-175-147-14.compute-1.amazonaws.com "cd sentiments && sudo git pull"; fi
-  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then ssh -o StrictHostKeyChecking=no -i sentiments.pem ubuntu@ec2-35-175-147-14.compute-1.amazonaws.com "cd sentiments && docker-compose down"; fi
-  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then ssh -o StrictHostKeyChecking=no -i sentiments.pem ubuntu@ec2-35-175-147-14.compute-1.amazonaws.com "cd sentiments && docker image prune -a -f"; fi
-  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then ssh -o StrictHostKeyChecking=no -i sentiments.pem ubuntu@ec2-35-175-147-14.compute-1.amazonaws.com "cd sentiments && docker-compose up -d"; fi
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then ssh -o StrictHostKeyChecking=no -i sentiments.pem ubuntu@ec2-18-205-149-71.compute-1.amazonaws.com "cd sentiments && sudo git pull"; fi
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then ssh -o StrictHostKeyChecking=no -i sentiments.pem ubuntu@ec2-18-205-149-71.compute-1.amazonaws.com "cd sentiments && docker-compose down"; fi
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then ssh -o StrictHostKeyChecking=no -i sentiments.pem ubuntu@ec2-18-205-149-71.compute-1.amazonaws.com "cd sentiments && docker image prune -a -f"; fi
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then ssh -o StrictHostKeyChecking=no -i sentiments.pem ubuntu@ec2-18-205-149-71.compute-1.amazonaws.com "cd sentiments && docker-compose up -d"; fi
